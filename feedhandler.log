@@ -1,0 +1,94 @@
+2021-05-24 19:43:15,797 : INFO : Config: use dict containing the following main keys: log
+2021-05-24 19:43:15,797 : INFO : Config: use dict containing the following main keys: log
+2021-05-24 19:43:15,797 : INFO : Config: use dict containing the following main keys: log
+2021-05-24 19:43:15,797 : INFO : Config: use dict containing the following main keys: log
+2021-05-24 19:43:16,270 : INFO : KUCOIN: create Config from type: <class 'NoneType'>
+2021-05-24 19:43:16,270 : INFO : KUCOIN: create Config from type: <class 'NoneType'>
+2021-05-24 19:43:16,270 : INFO : KUCOIN: create Config from type: <class 'NoneType'>
+2021-05-24 19:43:16,270 : INFO : KUCOIN: create Config from type: <class 'NoneType'>
+2021-05-24 19:43:16,560 : INFO : GATEIO: create Config from type: <class 'NoneType'>
+2021-05-24 19:43:16,560 : INFO : GATEIO: create Config from type: <class 'NoneType'>
+2021-05-24 19:43:16,560 : INFO : GATEIO: create Config from type: <class 'NoneType'>
+2021-05-24 19:43:16,560 : INFO : GATEIO: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:09,876 : INFO : Config: use dict containing the following main keys: log
+2021-05-24 19:44:09,876 : INFO : Config: use dict containing the following main keys: log
+2021-05-24 19:44:09,876 : INFO : Config: use dict containing the following main keys: log
+2021-05-24 19:44:09,876 : INFO : Config: use dict containing the following main keys: log
+2021-05-24 19:44:10,196 : INFO : KUCOIN: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,196 : INFO : KUCOIN: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,196 : INFO : KUCOIN: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,196 : INFO : KUCOIN: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,227 : INFO : GATEIO: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,227 : INFO : GATEIO: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,227 : INFO : GATEIO: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,227 : INFO : GATEIO: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,249 : INFO : COINBASE: reuse object Config containing the following main keys: log
+2021-05-24 19:44:10,249 : INFO : COINBASE: reuse object Config containing the following main keys: log
+2021-05-24 19:44:10,249 : INFO : COINBASE: reuse object Config containing the following main keys: log
+2021-05-24 19:44:10,249 : INFO : COINBASE: reuse object Config containing the following main keys: log
+2021-05-24 19:44:10,474 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,474 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,474 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,474 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,488 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,488 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,488 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,488 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,500 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,500 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,500 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,500 : INFO : COINBASE: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,512 : INFO : BITFINEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,512 : INFO : BITFINEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,512 : INFO : BITFINEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:10,512 : INFO : BITFINEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:11,565 : INFO : BITFINEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:11,565 : INFO : BITFINEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:11,565 : INFO : BITFINEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:11,565 : INFO : BITFINEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:11,575 : INFO : POLONIEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:11,575 : INFO : POLONIEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:11,575 : INFO : POLONIEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:11,575 : INFO : POLONIEX: create Config from type: <class 'NoneType'>
+2021-05-24 19:44:54,641 : ERROR : FH: Unhandled AssertionError() - shutting down
+Traceback (most recent call last):
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\site-packages\cryptofeed\feedhandler.py", line 161, in run
+    loop.run_forever()
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\asyncio\windows_events.py", line 314, in run_forever
+    assert self._self_reading_future is None
+AssertionError
+2021-05-24 19:44:54,641 : ERROR : FH: Unhandled AssertionError() - shutting down
+Traceback (most recent call last):
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\site-packages\cryptofeed\feedhandler.py", line 161, in run
+    loop.run_forever()
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\asyncio\windows_events.py", line 314, in run_forever
+    assert self._self_reading_future is None
+AssertionError
+2021-05-24 19:44:54,641 : ERROR : FH: Unhandled AssertionError() - shutting down
+Traceback (most recent call last):
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\site-packages\cryptofeed\feedhandler.py", line 161, in run
+    loop.run_forever()
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\asyncio\windows_events.py", line 314, in run_forever
+    assert self._self_reading_future is None
+AssertionError
+2021-05-24 19:44:54,641 : ERROR : FH: Unhandled AssertionError() - shutting down
+Traceback (most recent call last):
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\site-packages\cryptofeed\feedhandler.py", line 161, in run
+    loop.run_forever()
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\asyncio\windows_events.py", line 314, in run_forever
+    assert self._self_reading_future is None
+AssertionError
+2021-05-24 19:44:54,641 : ERROR : FH: Unhandled AssertionError() - shutting down
+Traceback (most recent call last):
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\site-packages\cryptofeed\feedhandler.py", line 161, in run
+    loop.run_forever()
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\asyncio\windows_events.py", line 314, in run_forever
+    assert self._self_reading_future is None
+AssertionError
+2021-05-24 19:46:18,619 : ERROR : FH: Unhandled AssertionError() - shutting down
+Traceback (most recent call last):
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\site-packages\cryptofeed\feedhandler.py", line 161, in run
+    loop.run_forever()
+  File "c:\users\iamsh\appdata\local\programs\python\python39\lib\asyncio\windows_events.py", line 314, in run_forever
+    assert self._self_reading_future is None
+AssertionError
