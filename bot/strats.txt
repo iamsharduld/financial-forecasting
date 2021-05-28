@@ -1,0 +1,10 @@
+I) 
+
+1. Find out average number of falls and rises.
+
+2. Buy just before the end of avg falls.
+
+3. Sell just before end of avg rises.
+
+
+II) Run FB prophet and try short term prediction
