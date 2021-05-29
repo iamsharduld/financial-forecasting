@@ -8,3 +8,19 @@ I)
 
 
 II) Run FB prophet and try short term prediction
+
+
+III) 
+
+1. Calculate multiple technical indicators in a single update
+
+2. Chose BUY if all signals indicate BUY
+
+3. Chose SELL if all signals indicate SELL
+
+
+IV) 
+
+1. Run the trends for multiple stocks / crypts / commodities and check 
+which of them are following the signals which we measure
+
