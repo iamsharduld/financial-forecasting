@@ -18,9 +18,38 @@ III)
 
 3. Chose SELL if all signals indicate SELL
 
+IV) Using reinforcement learning or real time ML strategies for optimising next move
 
-IV) 
 
-1. Run the trends for multiple stocks / crypts / commodities and check 
+V) Create combinations matrix against financial instruments. 
+
+
+
+
+
+Guidelines
+
+a) 
+
+1. Run the trends for multiple stocks / crypts / commodities (financial instruments) and check 
 which of them are following the signals which we measure
 
+
+b)
+
+1. Check which stocks have grown highest in the day (Top gainers), try using 
+algorithms specifically only for those
+
+c) Result analysis
+
+Check what happens if stock went down over a period of time,
+stock remained on same level, stock moved with index fund (I think should be the baseline),
+stock increased over time (would be baseline for that particular stock).
+Check the model performance for all these combinations of movement types
+
+
+
+* It's important to combine multiple above strategies to check which will give 
+return.
+
+* Using previous data testing and analysing is crucial here.
