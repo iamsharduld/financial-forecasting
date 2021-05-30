@@ -47,9 +47,14 @@ stock remained on same level, stock moved with index fund (I think should be the
 stock increased over time (would be baseline for that particular stock).
 Check the model performance for all these combinations of movement types
 
+How to calculate alpha? What is alpha?
+
+d) How does commission affect the returns? 
 
 
 * It's important to combine multiple above strategies to check which will give 
 return.
 
 * Using previous data testing and analysing is crucial here.
+
+* Shorting strategies usually beat the market (?) 
