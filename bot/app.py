@@ -20,12 +20,31 @@ eth_balance = 0
 prev_value = 100000
 first = -1
 
-portfolio_value_in_usd = balance_usd + eth_balance*0
 
 num_dec = 0
 num_inc = 0
 
 here = 0
+
+account = {
+    'ETH': {
+        'balance': 0
+    },
+    'BTC': {
+        'balance': 0
+    },
+    'USD': {
+        'balance': 100000
+    }
+}
+
+portfolio_value_in_usd = account['USD']['balance']
+
+
+symbol_data_map = {
+    'ETH': 'ETH/USDT',
+    'BTC': 'BTC/USDT'
+}
 
 
 def on_open(ws):
@@ -42,52 +61,9 @@ def on_message(ws, message):
     # pprint.pprint(json_message['k']['c'])
     closes.append(float(json_message['k']['c']))
 
-    if(first == -1):
-        first = float(json_message['k']['c'])
+
+
     
-    # SMA()
-
-
-    # adhoc()
-
-    random_choice()
-
-        
-
-def SMA():
-    global closes, moving_avg, cnt, balance_usd, eth_balance
-    moving_avg = ((moving_avg*window) + (closes[-1]-closes[0]))/float(window)
-    closes.pop(0)
-    cnt += 1
-    profit = 0
-    if cnt >= window:
-        print(closes)
-        print(moving_avg)
-
-        # If moving avg is below current closing price BUY
-        if moving_avg < closes[-1] and balance_usd > closes[-1]:
-            balance_usd -= closes[-1]
-            eth_balance += 1
-
-
-
-        # If moving avg is above current closing price SELL
-        if moving_avg > closes[-1] and eth_balance > 0:
-            balance_usd += closes[-1]
-            eth_balance -= 1
-
-            
-
-        portfolio_value_in_usd = balance_usd + eth_balance*closes[-1]
-    
-        print(balance_usd, eth_balance)
-        print(portfolio_value_in_usd)
-
-
-
-
-
-    # closes.pop(0)
     
 # Consecutive falls strat
 def adhoc():
@@ -122,75 +98,119 @@ def adhoc():
     print(portfolio_value_in_usd)
 
 
-# Random
-def random_choice():
-    global num_dec, num_inc, prev_value
-    global closes, moving_avg, cnt, balance_usd, eth_balance, here
 
- 
+# USD, ETH, 2000, 10
+# ETH, BTC, 40, 5
+def buy(symbol, exchange_rate, quantity):
+    global account
+    if account['USD']['balance'] < exchange_rate * quantity:
+        # print(f'Insufficient Balance USD')
+        return
+
+    account['USD']['balance'] -= (exchange_rate * quantity)
+    account[symbol]['balance'] += quantity
+
+
+def sell(symbol, exchange_rate, quantity):
+    global account
+
+
+    if quantity == 'all':
+        account['USD']['balance'] += account[symbol]['balance'] * exchange_rate
+        account[symbol]['balance'] = 0
+        # print(f'Insufficient Balance {symbol}')
+        return
+
+    if account[symbol]['balance'] < quantity:
+        # print(f'Insufficient Balance {symbol}')
+        return
+
+
+    account[symbol]['balance'] -= quantity
+    account['USD']['balance'] += quantity * exchange_rate
+
+# Strat 1 - Random Choice
+def random_choice(symbol, last_close):
+    global account, portfolio_value_in_usd
 
     if random.random() >= 0.5:
-        if(eth_balance > 0):
-            balance_usd += closes[-1]
-            eth_balance -= 1
+        sell(symbol, last_close, 1)
     else:
-        if(balance_usd > closes[-1]):
-            balance_usd -= closes[-1]
-            eth_balance += 1
-    portfolio_value_in_usd = balance_usd + eth_balance*closes[-1]
+        buy(symbol, last_close, 1)
+    portfolio_value_in_usd = account['USD']['balance'] + account[symbol]['balance']*last_close
+    # print(portfolio_value_in_usd)
+    # print(account)
 
-    if(portfolio_value_in_usd > prev_value):
-        balance_usd += closes[-1]*eth_balance
-        eth_balance = 0
-        prev_value = balance_usd
+# Strat 2 - SMA
+prev_closes = []
+def simple_moving_avg(symbol, last_close, duration=5):
+    global account, portfolio_value_in_usd
 
-    print(first, closes[-1], closes[-1]-first)
-    print(balance_usd, eth_balance)
-    print(portfolio_value_in_usd)
+    prev_closes.append(last_close)
+    # print(prev_closes)
+    if len(prev_closes) < duration+1:
+        # print(prev_closes)
+        return
 
-
-# Random
-def random_choice(last_close):
-    global balance_usd, eth_balance, portfolio_value_in_usd
-
-    if random.random() >= 0.5:
-        if(eth_balance > 0):
-            balance_usd += last_close
-            eth_balance -= 1
+    # print(last_close, np.mean(prev_closes))
+    if last_close < np.mean(prev_closes[len(prev_closes)-duration:]):
+        buy(symbol, last_close, 1)
     else:
-        if(balance_usd > last_close):
-            balance_usd -= last_close
-            eth_balance += 1
-    portfolio_value_in_usd = balance_usd + eth_balance*last_close
-
-    # print(first, last_close, last_close-first)
+        sell(symbol, last_close, 1)
 
 
+    portfolio_value_in_usd = account['USD']['balance'] + account[symbol]['balance']*last_close
+    # print(portfolio_value_in_usd)
+    # print(last_close, np.mean(prev_closes[len(prev_closes)-duration:] ), portfolio_value_in_usd)
+    # print(account)
 
-def get_data():
+def reset():
+    global account, portfolio_value_in_usd
+    account = {
+        'ETH': {
+            'balance': 0
+        },
+        'BTC': {
+            'balance': 0
+        },
+        'USD': {
+            'balance': 100000
+        }
+    }
+    portfolio_value_in_usd = account['USD']['balance']
+
+
+def get_data(symbol):
     binance = ccxt.binance()
     # each ohlcv candle is a list of [ timestamp, open, high, low, close, volume ]
-    return binance.fetchOHLCV('ETH/USDT', timeframe='5m', params={})
+    return binance.fetchOHLCV(symbol_data_map[symbol], timeframe='5m', params={})
 
-def backtest():
+def backtest(symbol, strategy):
     global balance_usd, eth_balance, portfolio_value_in_usd
-    data = get_data()
-
+    data = get_data(symbol)
+    print(type(strategy))
+    print(strategy)
     for candle in data:
-        random_choice(candle[1])
+        if strategy.__name__ == 'simple_moving_avg':
+            strategy(symbol, candle[1], duration=5)
+
+        if strategy.__name__ == 'random_choice':
+            strategy(symbol, candle[1])
 
     start_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data[-1][0]/1000))
     end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data[0][0]/1000))
-    print(start_time, end_time)
-    print( data[0][1], data[-1][1])
-    print(data[-1][1] - data[0][1])
-    print()
-    print("Indi balance", balance_usd, eth_balance)
-    print("Portfolio", portfolio_value_in_usd)
-    print()
-    print("Ethereum percent change", (100*(data[-1][1] - data[0][1])/float(data[0][1])))
-    print("Gain / Loss in percent", (100*(portfolio_value_in_usd-100000)/float(100000)))
 
+    print("Backtest Results: ")
+    print()
+    print(f'Start time: {start_time}, End time: {end_time}')
+    print(f'Start price: {data[0][1]}, End price: {data[-1][1]}')
+    print(f'Price difference: {data[-1][1] - data[0][1]}')
+    print()
+    print(f"{symbol} percent change {(100*(data[-1][1] - data[0][1])/float(data[0][1]))}")
+    print(f"Gain / Loss in percent {(100*(portfolio_value_in_usd-100000)/float(100000))}")
+    print(account)
+    print(portfolio_value_in_usd)
+    reset()
 
 
 
@@ -206,7 +226,7 @@ exchange = exchange_class({
 
 binance_markets = exchange.load_markets()
 
-backtest()
+backtest('ETH', simple_moving_avg)
 # ws = websocket.WebSocketApp(SOCKET, on_open=on_open, on_close=on_close, on_message=on_message)
 # ws.run_forever()
 
