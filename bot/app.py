@@ -98,9 +98,6 @@ def adhoc():
     print(portfolio_value_in_usd)
 
 
-
-# USD, ETH, 2000, 10
-# ETH, BTC, 40, 5
 def buy(symbol, exchange_rate, quantity):
     global account
     if account['USD']['balance'] < exchange_rate * quantity:
@@ -164,6 +161,43 @@ def simple_moving_avg(symbol, last_close, duration=5):
     # print(last_close, np.mean(prev_closes[len(prev_closes)-duration:] ), portfolio_value_in_usd)
     # print(account)
 
+
+# Strat 3 - Change of difference of closing prices
+# When difference of close prices changes from negative to positive, BUY
+# When difference of close prices changes from positive to negative, SELL
+# Result -> High change transformed to lower change eg. 15% gain -> 3 % gain, -10% loss -> -2% loss
+last_3_closes = []
+last_buy = -1
+last_sell = -1
+total_rev = 0
+def change_of_diff(symbol, last_close):
+
+    global portfolio_value_in_usd, last_3_closes, last_buy, last_sell, total_rev
+
+    if(len(last_3_closes) < 3):
+        last_3_closes.append(last_close)
+        return
+    else:
+        last_3_closes.pop(0)
+        last_3_closes.append(last_close)
+
+    print(last_3_closes, last_3_closes[1] - last_3_closes[0], last_3_closes[2] - last_3_closes[1])
+    # print(last_3_closes[1] - last_3_closes[0], last_3_closes[2] - last_3_closes[1])
+    if (last_3_closes[1] - last_3_closes[0] < 0) and (last_3_closes[2] - last_3_closes[1] > 0):
+        last_buy = last_3_closes[2]
+        buy(symbol, last_3_closes[2], 1)
+
+    if (last_3_closes[1] - last_3_closes[0] > 0) and (last_3_closes[2] - last_3_closes[1] < 0):
+        sell(symbol, last_3_closes[2], 1)
+        print(f"SELL {last_3_closes[2]}, last BUY {last_buy}")
+        print(last_buy - last_3_closes[2], total_rev)
+        if last_buy != -1:
+            total_rev += (last_3_closes[2] - last_buy)
+
+    portfolio_value_in_usd = account['USD']['balance'] + account[symbol]['balance']*last_3_closes[2]
+
+
+
 def reset():
     global account, portfolio_value_in_usd
     account = {
@@ -186,10 +220,11 @@ def get_data(symbol):
     return binance.fetchOHLCV(symbol_data_map[symbol], timeframe='5m', params={})
 
 def backtest(symbol, strategy):
-    global balance_usd, eth_balance, portfolio_value_in_usd
+    global balance_usd, eth_balance, portfolio_value_in_usd, total_rev
     data = get_data(symbol)
     print(type(strategy))
     print(strategy)
+    # print(data)
     for candle in data:
         if strategy.__name__ == 'simple_moving_avg':
             strategy(symbol, candle[1], duration=5)
@@ -197,10 +232,13 @@ def backtest(symbol, strategy):
         if strategy.__name__ == 'random_choice':
             strategy(symbol, candle[1])
 
-    start_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data[-1][0]/1000))
-    end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data[0][0]/1000))
+        if strategy.__name__ == 'change_of_diff':
+            strategy(symbol, candle[4])
 
-    print("Backtest Results: ")
+    end_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data[-1][0]/1000))
+    start_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data[0][0]/1000))
+
+    print(f"Backtest Results: {total_rev}")
     print()
     print(f'Start time: {start_time}, End time: {end_time}')
     print(f'Start price: {data[0][1]}, End price: {data[-1][1]}')
@@ -215,8 +253,6 @@ def backtest(symbol, strategy):
 
 
 
-
-
 exchange_id = 'binance'
 exchange_class = getattr(ccxt, exchange_id)
 exchange = exchange_class({
@@ -226,7 +262,7 @@ exchange = exchange_class({
 
 binance_markets = exchange.load_markets()
 
-backtest('ETH', simple_moving_avg)
+backtest('BTC', change_of_diff)
 # ws = websocket.WebSocketApp(SOCKET, on_open=on_open, on_close=on_close, on_message=on_message)
 # ws.run_forever()
 
